@@ -1,0 +1,20 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7100/eureka/
+server:
+  port: 7400
+
+spring:
+  application:
+    name: service-swagger
+
+swagger:
+  enabled: true
+  title: Swagger2练习
+  description: 微服务API接口服务
+  version: 1.0.1
+  contact:
+    name: liangsy
+  base-package: com.liangsy.swagger
+  base-path: /swagger/**

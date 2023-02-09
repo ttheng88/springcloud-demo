@@ -1,0 +1,23 @@
+server:
+  port: 7211
+
+spring:
+  application:
+    name: service-zipkin-provider
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://localhost:7100/eureka/
+  instance:
+    instance-id: zipkin-provider
+    prefer-ip-address: true
+

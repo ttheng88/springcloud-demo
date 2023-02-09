@@ -1,0 +1,11 @@
+server:
+  port: 7108
+
+spring:
+  application:
+    name: hystrix-service-dashboard
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7100/eureka/
+

@@ -1,0 +1,33 @@
+server:
+  port: 7105
+spring:
+  application:
+    name: service-gateway
+  cloud:
+    gateway:
+#      discovery:
+#        locator:
+#          enabled: true  #开启从注册中心动态创建路由的功能，利用微服务名进行路由
+      routes:
+        - id: privoder_7102_7101 #路由的ID，没有固定规则但要求唯一
+#          uri: http://localhost:7102
+          uri: lb://service-provider #uri的协议为lb，表示启用Gateway的负载均衡功能。
+          predicates:
+            - Path=/getUserList         # 例如：http://127.0.0.1:7105/getUserList?username=zhangsan
+#            - After=2020-10-21T15:45:50.818+08:00[Asia/Shanghai]
+#            - Cookie=username,liangsy #并且Cookie是username=liangsy才能访问 --cookie "username=liangsy"  例如： curl http://127.0.0.1:7105/getUserList?username=zhangsan --cookie "username=liangsy"
+#            - Header=X-Request-Id, \d+ #请求头中要有X-Request-Id属性并且值为整数的正则表达式 -H "X-Request-Id:123456"
+#            - Host=**.zhdgps.com      #根据域名匹配 -H "Host: liangs.zhdgps.com"
+#            - Method=GET             #根据请求方式匹配 -X GET
+#            - Query=username, \d+ #要有参数名称username并且是正整数才能路由  ?username=123456
+          filters:
+            - StripPrefix=0 #去掉uri的第1个路劲前缀 例如 http://127.0.0.1:7105/gateway/login 转发到 http://127.0.0.1:7105/login
+
+eureka:
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://localhost:7100/eureka/
+
+

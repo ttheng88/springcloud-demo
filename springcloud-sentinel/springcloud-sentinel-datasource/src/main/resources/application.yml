@@ -1,0 +1,86 @@
+server:
+  port: 8401
+
+spring:
+  application:
+    name: cloudalibaba-sentinel-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #Nacos服务注册中心地址
+    sentinel:
+      transport:
+        dashboard: localhost:8080 #配置Sentinel dashboard地址
+        port: 8719  #sentinel api接口
+      #规则持久化 配合nacos配置中心使用
+      datasource:
+        #名称随意
+        mydb1:
+          #对应配置中心相关参数
+          nacos:
+            server-addr: localhost:8848 #注意 使用192.168.200.239:8848会导致持久化不生效
+            dataId: ${spring.application.name}-flow #对应在配置中心配的DataID，以下同理类推
+            groupId: DEFAULT_GROUP
+            data-type: json
+            #路由存储规则类型，取值见 org.springframework.cloud.alibaba.sentinel.datasource.RuleType
+            rule-type: flow #流量控制
+        mydb2:
+          nacos:
+            server-addr: localhost:8848
+            dataId: ${spring.application.name}-degrade
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade #熔断降级
+        mydb3:
+          nacos:
+            server-addr: localhost:8848
+            dataId: ${spring.application.name}-param-flow
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: param-flow #热点参数
+
+
+
+
+
+
+#流量控制参考json
+#  [
+#  {
+#    "resource": "flow",
+#    "limitApp": "default",
+#    "grade":   1,
+#    "count":   1,
+#    "strategy": 0,
+#    "controlBehavior": 0,
+#    "clusterMode": false
+#  }
+#  ]
+
+
+#熔断降级参考json
+#  [
+#  {
+#    "resource": "degrade",
+#    "grade":   0,
+#    "count":   300,
+#    "timeWindow":   20,
+#    "minRequestAmount": 5,
+#    "statIntervalMs": 1000,
+#    "slowRatioThreshold": 0.5
+#  }
+#  ]
+
+
+#热点参数参考json
+#  [
+#  {
+#    "resource": "paramFlow",
+#    "grade":   1,
+#    "count":   1,
+#    "durationInSec": 1,
+#    "controlBehavior": 0,
+#    "paramIdx": 0,
+#    "clusterMode": false
+#  }
+#  ]
